@@ -1,0 +1,82 @@
+<!doctype html>
+<!--
+Stage 3c · save as docs/screens/FEATURE-CODE-screen-name-00.screen.html (paired with the .screen.md).
+Rules:
+- Render the real screen at full viewport, exactly as in the app. No doc-preview chrome: no outer page header or top bar.
+- Use tokens from docs/design/theme.css / design-system.html. No ad-hoc colors, spacing or fonts.
+- Every state in the .screen.md lives on this ONE layout, switched through the floating collapsible panel (bottom-right). Never duplicate the screen side by side.
+- The panel is a prototype affordance only; it is not part of the shipped UI.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><CODE> — <Screen name></title>
+    <style>
+      /* Replace with the tokens from docs/design/theme.css */
+      :root {
+        --primary: #1db954;
+        --on-primary: #0b0f0d;
+        --ink: #121212;
+        --ink-secondary: #4b4f4e;
+        --paper: #fafaf8;
+        --surface: #ffffff;
+        --surface-sunken: #f1f2f0;
+        --border: #e3e4e1;
+        --error: #a83a30;
+        --error-bg: #fbeae8;
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --space-xs: 4px;
+        --space-sm: 8px;
+        --space-md: 16px;
+        --shadow-floating: 0 4px 16px rgba(0, 0, 0, 0.12);
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--paper); color: var(--ink); font-family: Inter, -apple-system, "Segoe UI", sans-serif; }
+
+      /* ---------- Real screen UI goes here ---------- */
+
+      /* ---------- Floating state-preview panel (prototype-only) ---------- */
+      .state-control { position: fixed; bottom: var(--space-md); right: var(--space-md); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-floating); font-size: 0.8125rem; z-index: 10; max-width: 220px; }
+      .state-control summary { list-style: none; cursor: pointer; padding: var(--space-sm) var(--space-md); font-weight: 600; color: var(--ink-secondary); }
+      .state-control summary::-webkit-details-marker { display: none; }
+      .state-control[open] summary { border-bottom: 1px solid var(--border); }
+      .state-control-body { padding: var(--space-xs); display: flex; flex-direction: column; gap: 2px; }
+      .state-control-body button { text-align: left; border: none; background: none; padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-sm); color: var(--ink); cursor: pointer; font: inherit; }
+      .state-control-body button:hover { background: var(--surface-sunken); }
+      .state-control-body button.is-active { background: var(--primary); color: var(--on-primary); }
+      @media print { .state-control { display: none; } }
+    </style>
+  </head>
+  <body>
+    <main id="screen" data-state="default">
+      <!-- Real screen markup here -->
+    </main>
+
+    <details class="state-control">
+      <summary>Preview state</summary>
+      <div class="state-control-body" id="state-list">
+        <button type="button" data-state="default" class="is-active">Default</button>
+        <button type="button" data-state="loading">Loading</button>
+        <button type="button" data-state="error">Error</button>
+        <!-- one button per state in the .screen.md -->
+      </div>
+    </details>
+
+    <script>
+      const screen = document.getElementById("screen");
+      function setState(state) {
+        screen.dataset.state = state;
+        document
+          .querySelectorAll(".state-control-body button")
+          .forEach((b) => b.classList.toggle("is-active", b.dataset.state === state));
+        // Update the real layout for this state (show/hide banners, disable inputs, swap content).
+      }
+      document.getElementById("state-list").addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-state]");
+        if (btn) setState(btn.dataset.state);
+      });
+    </script>
+  </body>
+</html>

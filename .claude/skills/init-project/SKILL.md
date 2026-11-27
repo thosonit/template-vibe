@@ -1,6 +1,6 @@
 ---
 name: init-project
-description: "Confirms the target system/application for a brand-new project cloned from this multi-stack vibe-coding template, and names the project and its stacks in CLAUDE.md. It is a one-time repo-initialization skill, outside the per-task SDLC lifecycle; afterwards the work starts at stage 1 (Requirement) of CLAUDE.md's Develop Instructions. Use this automatically the first time real work starts in a freshly cloned copy of this template - e.g. src/ has no real project folders yet and/or CLAUDE.md has no \"## Project\" section - and also whenever the user explicitly asks to start a new project, initialize/bootstrap this template, or set up the app/system. Trigger this before writing any spec, architecture doc, or code for a new project, even if the user jumps straight into describing a feature - confirm the system and stack first."
+description: "Confirms the target system/application for a brand-new project cloned from this multi-stack vibe-coding template, and names the project and its stacks in CLAUDE.md. It is a one-time repo-initialization skill, outside the per-task SDLC lifecycle; afterwards the work starts at stage 1 (Requirement) of CLAUDE.md's Workflow. Use this automatically the first time real work starts in a freshly cloned copy of this template - e.g. src/ has no real project folders yet and/or CLAUDE.md has no \"## Project\" section - and also whenever the user explicitly asks to start a new project, initialize/bootstrap this template, or set up the app/system. Trigger this before writing any spec, architecture doc, or code for a new project, even if the user jumps straight into describing a feature - confirm the system and stack first."
 ---
 
 # init-project
@@ -13,7 +13,7 @@ holds generic reference architectures (`NEXT_ARCHITECTURE.md`,
 spec/architecture/code work starts on a newly cloned project, this skill
 confirms what's actually being built and makes the template's shared docs
 reflect that — so later steps (`superpowers:brainstorming` and the rest of
-`CLAUDE.md`'s Develop Instructions) build on the right assumptions instead of
+`CLAUDE.md`'s Workflow) build on the right assumptions instead of
 inheriting the template's example content by accident.
 
 This skill assumes the user has already cloned or created the new repo from
@@ -33,6 +33,25 @@ If either is true, **stop and ask the user** how they want to proceed (e.g.
 "this looks already initialized — do you want to re-confirm the project
 setup, or were you about to do something else?") instead of silently
 re-running the steps below or overwriting what's there.
+
+## Document templates
+
+`templates/` (next to this file) holds the blank format for every document
+in the workflow. `CLAUDE.md` defines no document formats; when any stage
+creates a doc, copy the matching template and fill it in:
+
+| Template | Creates |
+|---|---|
+| `requirement.md` | `docs/requirement/YYYY-MM-DD-task-name.md` |
+| `intent.md`, `plan-index.md` | `docs/plan/*.intent.md`, `docs/plan/01_plan.md` |
+| `spec.md`, `spec-index.md` | `docs/specs/CODE-feature-name.spec.md`, `01_spec.md` |
+| `screen.md`, `screen.html`, `screen-index.md` | `docs/screens/FEATURE-CODE-screen-name-00.screen.md` + paired `.screen.html`, `01_screen.md` |
+| `api.md`, `api-endpoint.md` | `docs/api/api.md`, `docs/api/endpoints/<group>.md` |
+| `db.md` | `docs/database/db.md` |
+| `testcase.md` | `docs/test/CODE-feature-name.testcase.md` |
+| `impl-plan.md` | `docs/superpowers/plans/YYYY-MM-DD-task-name.md` |
+
+To change a format, edit the template, not individual docs.
 
 ## Step 1: Confirm the project, one topic at a time
 
@@ -90,9 +109,8 @@ Edit the repo's `CLAUDE.md`:
 - In the `## Structure` code fence, update the `src/` line's inline comment
   to name the actual confirmed sub-project folders/stacks instead of the
   generic `<project-name>` placeholder text.
-- **Do not touch** `## Develop Instructions`, `## Rules`, or
-  `### Naming Convention` — those sections are already stack-agnostic and
-  apply unchanged regardless of what's being built.
+- **Do not touch** `## Workflow` or `## Rules` — they are already
+  stack-agnostic and apply unchanged regardless of what's being built.
 
 ## Step 4: Leave the existing example docs alone
 
@@ -114,5 +132,5 @@ Close with a short summary covering:
   only, not a real feature of this project.
 - Next step: this skill is done and is not part of the per-task lifecycle.
   Start the first real feature at stage 1 (Requirement) of `CLAUDE.md`'s
-  Develop Instructions; any stack whose architecture doc is "to be written"
+  Workflow; any stack whose architecture doc is "to be written"
   gets it in stage 3 (Design).
