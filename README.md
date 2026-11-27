@@ -47,7 +47,7 @@ Each stage ends by committing the artifact the next stage reads.
 |                                                | 4b. Implement             | `superpowers:executing-plans`                  | plan, architecture, prototype, design system | working code                                                                                        |
 |                                                | 4c. Verify                | `superpowers:verification-before-completion`   | code                                         | build/lint/typecheck pass                                                                           |
 |                                                | 4d. Code Review (require) | `superpowers:requesting-code-review`           | diff, plan, docs                             | CRITICAL/HIGH findings fixed                                                                        |
-| **5. Test** (require)                          | 5a. Generate cases        | AI (no dedicated skill)                        | specs, screens                               | `docs/test/CODE-feature-name.testcase.md`                                                           |
+| **5. Test** (require)                          | 5a. Generate cases        | `generate-testcases`                           | specs, screens                               | `docs/test/CODE-feature-name.testcase.md`                                                           |
 |                                                | 5b. Run cases             | developer or AI                                | code, test cases                             | results; user confirms the feature works                                                            |
 |                                                | 5c. Fix bugs              | `superpowers:systematic-debugging`             | failing cases                                | root cause fixed; if docs must change, restart from stage 2                                         |
 | **6. Deploy** (require)                        | Deploy                    | the project's own deploy skill                 | code the user confirmed                      | release                                                                                             |
@@ -79,7 +79,7 @@ Status: ✅ available · 🚧 not yet created.
 | `write-spec`                 | 3b       | `CODE-feature-name.spec.md` from template + `01_spec.md` entry          | 🚧     |
 | `write-screen-spec`          | 3c       | `.screen.md` + `.screen.html` prototype with state-switch panel         | 🚧     |
 | `write-api-db-docs`          | 3d, 3e   | Update `docs/api/` and `docs/database/db.md` from the spec              | 🚧     |
-| `generate-testcases`         | 5a       | `CODE-feature-name.testcase.md` from specs and screens                  | 🚧     |
+| `generate-testcases`         | 5a       | `CODE-feature-name.testcase.md` from specs and screens                  | ✅     |
 | `nextjs-code-review`         | 4d       | Next.js review checklist (counterpart of the Flutter one)               | 🚧     |
 | `deploy`                     | 6        | Written per project; the template does not ship one                     | 🚧     |
 

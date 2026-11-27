@@ -48,7 +48,7 @@ Per feature/task, work through the stages in order. Every task starts at stage 1
 |                          | 4b Implement      | `superpowers:executing-plans` (or `subagent-driven-development`) | working code; check off each plan step as it is done  |
 |                          | 4c Verify         | `superpowers:verification-before-completion`   | build/lint/typecheck passing, actually run                              |
 |                          | 4d Code review (require) | `superpowers:requesting-code-review`    | CRITICAL/HIGH findings fixed                                            |
-| **5. Test** (require)    | 5a Generate cases | none (write from specs/screens)                | `docs/test/CODE-feature-name.testcase.md`                               |
+| **5. Test** (require)    | 5a Generate cases | `generate-testcases`                           | `docs/test/CODE-feature-name.testcase.md`                               |
 |                          | 5b Run cases      | developer or AI                                | executed cases with results                                             |
 |                          | 5c Fix bugs       | `superpowers:systematic-debugging`             | root cause fixed, affected cases re-run                                 |
 | **6. Deploy** (require)  | Deploy            | the project's own skill in `.claude/skills/`   | release                                                                 |
