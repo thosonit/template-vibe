@@ -1,6 +1,6 @@
 ---
 name: init-project
-description: "Confirms the target system/application for a brand-new project cloned from this multi-stack vibe-coding template, adjusts docs/architecture/ and CLAUDE.md to match the confirmed stack, and hands off to the normal Develop Instructions (brainstorm -> spec -> code). Use this automatically the first time real work starts in a freshly cloned copy of this template - e.g. src/ has no real project folders yet and/or CLAUDE.md has no \"## Project\" section - and also whenever the user explicitly asks to start a new project, initialize/bootstrap this template, or set up the app/system. Trigger this before writing any spec, architecture doc, or code for a new project, even if the user jumps straight into describing a feature - confirm the system and stack first."
+description: "Confirms the target system/application for a brand-new project cloned from this multi-stack vibe-coding template, and names the project and its stacks in CLAUDE.md. It is a one-time repo-initialization skill, outside the per-task SDLC lifecycle; afterwards the work starts at stage 1 (Requirement) of CLAUDE.md's Develop Instructions. Use this automatically the first time real work starts in a freshly cloned copy of this template - e.g. src/ has no real project folders yet and/or CLAUDE.md has no \"## Project\" section - and also whenever the user explicitly asks to start a new project, initialize/bootstrap this template, or set up the app/system. Trigger this before writing any spec, architecture doc, or code for a new project, even if the user jumps straight into describing a feature - confirm the system and stack first."
 ---
 
 # init-project
@@ -50,38 +50,27 @@ the project name or stack outright):
 3. **Architecture reference per stack** — for each confirmed stack, is there
    already a matching doc in `docs/architecture/`? Today that's
    `NEXT_ARCHITECTURE.md` (Next.js) and `FLUTTER_ARCHITECTURE.md` (Flutter).
-   Confirm with the user whether each maps to an existing doc or needs a new
-   one (see Step 2).
+   Confirm with the user whether each maps to an existing doc or is still to
+   be written (see Step 2).
 
 Keep summarizing your understanding back to the user before moving to Step 2
 — getting this wrong is expensive because everything downstream (architecture
 docs, CLAUDE.md, every future spec) inherits it.
 
-## Step 2: Reuse or create the architecture docs
+## Step 2: Map each stack to an architecture reference
 
 The existing `NEXT_ARCHITECTURE.md` and `FLUTTER_ARCHITECTURE.md` are
 generic, reusable references with no project-specific content baked in —
 they describe *how to structure* a Next.js or Flutter codebase, not anything
-about this particular project. So when a confirmed stack matches one of
-these:
+about this particular project. This skill does **not** write or edit
+architecture docs; it only records which reference each stack starts from.
 
-- **Just confirm reuse as-is.** Do not edit or regenerate the file — there's
-  nothing project-specific in it to change.
-
-When a confirmed stack has **no existing doc** (e.g. a backend framework like
-NestJS, Go, Django, or anything else not already covered):
-
-- Run a short, one-topic-at-a-time brainstorm with the user covering
-  whatever's relevant to that stack — folder structure, layering, dependency
-  injection, data access, error handling, configuration, testing strategy,
-  and so on. Use `NEXT_ARCHITECTURE.md`/`FLUTTER_ARCHITECTURE.md` as the bar
-  for section structure and depth, not their specific content.
-- Write the result to `docs/architecture/<STACK>_ARCHITECTURE.md` (e.g.
-  `NESTJS_ARCHITECTURE.md`), matching the naming pattern of the existing
-  docs.
-- Stop and get explicit confirmation on the generated doc before moving on,
-  the same way `scaffold-flutter-app` waits for architecture confirmation
-  before generating code.
+- When a confirmed stack matches an existing doc: note it, leave the file
+  untouched.
+- When a confirmed stack has **no existing doc** (e.g. NestJS, Go, Django):
+  note it as "to be written". The architecture doc for it is written in
+  stage 3 (Design) of the project's first loop, in `CLAUDE.md`'s Develop
+  Instructions — not here.
 
 ## Step 3: Update CLAUDE.md to name this project
 
@@ -123,5 +112,7 @@ Close with a short summary covering:
 - An explicit note that `AUTH-user-auth` across `docs/specs/`,
   `docs/screens/`, `docs/database/`, and `docs/api/` is a reference example
   only, not a real feature of this project.
-- Next step: use `superpowers:brainstorming` to start the first real feature,
-  per Step 1 (Brainstorm) of `CLAUDE.md`'s Develop Instructions.
+- Next step: this skill is done and is not part of the per-task lifecycle.
+  Start the first real feature at stage 1 (Requirement) of `CLAUDE.md`'s
+  Develop Instructions; any stack whose architecture doc is "to be written"
+  gets it in stage 3 (Design).

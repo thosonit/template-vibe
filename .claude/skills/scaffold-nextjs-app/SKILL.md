@@ -5,6 +5,12 @@ description: "Scaffold a brand-new Next.js app codebase into a source directory 
 
 # scaffold-nextjs-app
 
+> **Lifecycle note:** this is a one-time bootstrap tool, outside the per-task
+> SDLC in `CLAUDE.md`. It brainstorms and writes its own architecture doc for
+> the new codebase. If the repo's `docs/architecture/` already holds a
+> confirmed architecture for this stack (written in stage 3), use that doc
+> and reconcile instead of generating a divergent second one.
+
 Bootstrap a brand-new Next.js app: brainstorm and confirm an architecture
 doc with the user, then generate the codebase (skeleton + one starter
 feature) from that confirmed doc.

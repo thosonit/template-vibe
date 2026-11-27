@@ -5,6 +5,12 @@ description: "Scaffold a brand-new Flutter app codebase into a source directory 
 
 # scaffold-flutter-app
 
+> **Lifecycle note:** this is a one-time bootstrap tool, outside the per-task
+> SDLC in `CLAUDE.md`. It brainstorms and writes its own architecture doc for
+> the new codebase. If the repo's `docs/architecture/` already holds a
+> confirmed architecture for this stack (written in stage 3), use that doc
+> and reconcile instead of generating a divergent second one.
+
 Bootstrap a brand-new Flutter app: brainstorm and confirm an architecture
 doc with the user, then generate the codebase (skeleton + one starter
 feature) from that confirmed doc.
@@ -14,7 +20,7 @@ it bundles its own reference architecture at
 `scaffold-flutter-app/templates/FLUTTER_ARCHITECTURE.template.md`, plus a
 ready-to-copy Dart codebase at `scaffold-flutter-app/templates/dart/` (see
 "Bundled Dart Templates" below) — it does not depend on a
-`docs/architectures/FLUTTER_ARCHITECTURE.md` existing anywhere, nor on
+`docs/architecture/FLUTTER_ARCHITECTURE.md` existing anywhere, nor on
 writing every file from scratch each run. It is not for adding a feature
 to an already-architected app — for that, just follow that project's own
 architecture doc directly.
@@ -108,7 +114,7 @@ explain trade-offs in those terms.
   dependencies, commands). Adapt it to the user's answers rather than
   starting from a blank page, unless the user wants something materially
   different. If the current repo also happens to have its own
-  `docs/architectures/FLUTTER_ARCHITECTURE.md`, treat the bundled template
+  `docs/architecture/FLUTTER_ARCHITECTURE.md`, treat the bundled template
   as authoritative for this skill — don't depend on the repo file being
   present.
 
@@ -162,7 +168,7 @@ override:
     `FLUTTER_ARCHITECTURE.md` Testing section so it's not silently
     reintroduced later.
 
-Generate `<target_dir>/<project_name>/docs/architectures/FLUTTER_ARCHITECTURE.md`
+Generate `<target_dir>/<project_name>/docs/architecture/FLUTTER_ARCHITECTURE.md`
 (or the path the user prefers) by copying the structure and level of detail
 of the bundled
 `scaffold-flutter-app/templates/FLUTTER_ARCHITECTURE.template.md` —
@@ -266,7 +272,7 @@ Print a summary of what was created:
 ```
 | Item                  | Path                                              |
 |------------------------|---------------------------------------------------|
-| Architecture doc       | <target_dir>/<project_name>/docs/architectures/...|
+| Architecture doc       | <target_dir>/<project_name>/docs/architecture/...|
 | Project root           | <target_dir>/<project_name>/                      |
 | First feature          | lib/features/<feature_name>/                      |
 | README                 | <target_dir>/<project_name>/README.md             |
