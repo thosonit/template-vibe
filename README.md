@@ -55,12 +55,42 @@ Each stage ends by committing the artifact the next stage reads.
 
 Notes:
 
-- In stages 2 and 3, brainstorming must not hand off to `writing-plans`: stop after writing the files above; the plan is written in 4a.
-- Stage 3: a task only does the sub-steps it needs, not all of 3a–3e.
-- Specs and screens stay `Draft` in `01_spec.md` / `01_screen.md` until the user approves them (`Approved`); Build starts after that.
-- Architecture is written in a project's first loop, from the closest generic reference, and confirmed by the user.
-- Merge / PR is outside the flow; the deploy skill decides how code reaches the main branch.
+- Stages 2 and 3 stop after writing their files; don't hand off to `writing-plans` (that is 4a).
+- Stage 3 does only the sub-steps the task needs; 3a is written in a project's first loop.
+- Specs and screens stay `Draft` in `01_spec.md` / `01_screen.md` until the user approves them (`Approved`); then Build starts.
+- Merge / PR is outside the flow; the deploy skill decides how code reaches `main`.
 
-## 4. Rules
+## 4. Skills
+
+Status: ✅ available · 🚧 not yet created.
+
+### Repo skills (`.claude/skills/`)
+
+| Skill                        | Stage    | Purpose                                                                 | Status |
+| ---------------------------- | -------- | ----------------------------------------------------------------------- | ------ |
+| `init-project`               | Setup    | Confirm the system and stacks, record them in CLAUDE.md                 | ✅     |
+| `git-conventions`            | Setup, 6 | GitFlow branches + Conventional Commits                                 | ✅     |
+| `design-md-builder`          | Setup, 3c | Build / lint `docs/design/DESIGN.md`                                   | ✅     |
+| `design-system-html-builder` | Setup, 3c | Build `design-system.html` from DESIGN.md                              | ✅     |
+| `scaffold-nextjs-app`        | 3a, 4    | Next.js architecture doc + project skeleton                             | ✅     |
+| `scaffold-flutter-app`       | 3a, 4    | Flutter architecture doc + project skeleton                             | ✅     |
+| `flutter-dart-code-review`   | 4d       | Flutter/Dart review checklist                                           | ✅     |
+| `capture-requirement`        | 1, 7     | Save raw info or bug reports to `docs/requirement/YYYY-MM-DD-task-name.md` | 🚧  |
+| `write-spec`                 | 3b       | `CODE-feature-name.spec.md` from template + `01_spec.md` entry          | 🚧     |
+| `write-screen-spec`          | 3c       | `.screen.md` + `.screen.html` prototype with state-switch panel         | 🚧     |
+| `write-api-db-docs`          | 3d, 3e   | Update `docs/api/` and `docs/database/db.md` from the spec              | 🚧     |
+| `generate-testcases`         | 5a       | `CODE-feature-name.testcase.md` from specs and screens                  | 🚧     |
+| `nextjs-code-review`         | 4d       | Next.js review checklist (counterpart of the Flutter one)               | 🚧     |
+| `deploy`                     | 6        | Written per project; the template does not ship one                     | 🚧     |
+
+### External skills (plugin / global)
+
+| Skill                                                                                                                                                          | Stage            | Purpose                                         | Status |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ----------------------------------------------- | ------ |
+| `superpowers:*` (`brainstorming`, `writing-plans`, `executing-plans`, `verification-before-completion`, `requesting-code-review`, `systematic-debugging`) | 2, 3, 4, 5       | Core workflow skills; Superpowers plugin required | ✅   |
+| `frontend-design`                                                                                                                                              | 3c               | Distinctive UI for screen prototypes            | ✅     |
+| `review-spec-docs`                                                                                                                                             | 3 (before approval) | Review the spec set for gaps and consistency | ✅     |
+
+## 5. Rules
 
 - `docs/` is the **single source of truth**: read it before any change and update it the moment something changes.
