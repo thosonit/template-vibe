@@ -1,72 +1,69 @@
 # Vibe Template
 
-A starter template for **vibe coding** projects — a workflow where you build software through fast, iterative collaboration with an AI coding assistant instead of upfront heavy design docs.
+## 1. Overview
 
-## Folder Structure
+Starter template for **vibe coding**: build software through fast, iterative conversation with an AI assistant, using short docs that grow step by step. Work follows a 7-stage SDLC and loops back through Maintain. Requires the Superpowers plugin. 
 
+## 2. Folder Structure
+
+```text
+.claude/             # Skills
+src/<project-name>/  # One folder per sub-project (web/, mobile/), per docs/architecture/
+docs/                # Single source of truth
+├── requirement/     # Raw customer info and ideas
+├── plan/            # 01_plan.md index + *.intent.md
+├── architecture/    # Source architecture per stack
+├── specs/           # CODE-feature-name.spec.md + 01_spec.md
+├── api/             # api.md + endpoints/*.md
+├── database/        # db.md
+├── screens/         # FEATURE-CODE-screen-name-00.screen.md + .screen.html + 01_screen.md
+├── design/          # DESIGN.md, design-system.html, theme.css
+├── test/            # CODE-feature-name.testcase.md
+└── superpowers/plans/  # YYYY-MM-DD-task-name.md (implementation plan)
 ```
-vibe-template/
-├── .claude/          # Assistant config: skills, agents, hooks, settings
-├── src/               # Application source code
-├── docs/              # Core reference docs: specs, API contracts, screen docs
-│   ├── specs/         # Feature requirements / PRDs (CODE-feature-name.spec.md, CODE = uppercase)
-│   ├── api/           # API contracts (openapi.yaml + per-endpoint notes)
-│   ├── database/      # Database schema / ERD / migration notes (one per feature)
-│   ├── screens/        # Screen specs (flat, FEATURE-CODE-screen-name-00.screen.md) + per-screen mockup folder
-│   ├── design/        # Design tokens and visual system (DESIGN.md + design-system.html)
-│   ├── adr/           # Architecture Decision Records (optional)
-│   └── superpowers/   # Per-task artifacts (superpowers plugin defaults), separate from core docs
-│       ├── specs/     # YYYY-MM-DD-task-name.spec.md — task spec draft, not yet synced to core docs
-│       └── plans/     # YYYY-MM-DD-task-name.md — implementation plan
-├── tests/             # Unit / integration / e2e tests
-└── README.md
-```
 
-Adapt folder names to your stack (e.g. `src/` → `app/` for web frameworks), but keep the separation of code, docs, and tests.
+## 3. SDLC
 
-### Rules
+### One-time setup
 
-- Everything under `docs/` is the **single source of truth** for the project — always consult it before developing a new feature or change, and always update it the moment something changes. Stale docs are treated as bugs.
-- See `CLAUDE.md` for the detailed naming convention and file-by-file breakdown of `docs/`.
+1. **CLAUDE.md** — project overview, structure, conventions.
+2. **Git convention** — GitFlow + Conventional Commits (`git-conventions`).
+3. **Design system** — `docs/design/DESIGN.md`, `docs/design/design-system.html`.
 
-## Project Setup (one-time, before the lifecycle)
+### Per feature / task
 
-Do these once when the project starts (or whenever a project-wide technical/process decision changes) — they are not repeated per feature.
+Each stage ends by committing the artifact the next stage reads.
 
-1. **Define CLAUDE.md** — project overview, structure, and conventions the assistant follows. Output: `CLAUDE.md`
-2. **Define Architecture** (optional) — overall source code structure every feature builds on. Example: run `.claude/skills/scaffold-flutter-app`
-3. **Define Git Convention** — branching model, commit format, PR flow. Example: `.claude/skills/git-conventions`
-4. **Define Design System** — shared visual language, tokens, UI reference. Output: `docs/design/DESIGN.md` and `docs/design/design-system.html`
+| Stage                                          | Step                      | Skill                                          | Input                                        | Output                                                                                              |
+| ---------------------------------------------- | ------------------------- | ---------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| **1. Requirement**                             | Collect                   | — (manual)                                     | customer info, ideas, tickets, bug reports   | `docs/requirement/YYYY-MM-DD-task-name.md`                                                          |
+| **2. Plan**                                    | Brainstorm intent         | `superpowers:brainstorming`                    | requirement files                            | `docs/plan/YYYY-MM-DD-task-name.intent.md` + `01_plan.md` entry (`Draft` → `Accepted` / `Rejected`) |
+| **3. Design** (require, `Accepted` plans only) | 3a. Architecture          | `superpowers:brainstorming`                    | `Accepted` intent, core docs                 | `docs/architecture/<STACK>_ARCHITECTURE.md`                                                         |
+|                                                | 3b. Spec                  | `superpowers:brainstorming`                    | `Accepted` intent, core docs                 | `docs/specs/CODE-feature-name.spec.md` + `01_spec.md` entry                                         |
+|                                                | 3c. Screens               | `superpowers:brainstorming`, `frontend-design` | spec, `docs/design/`                         | `docs/screens/FEATURE-CODE-screen-name-00.screen.md` + `.screen.html`                               |
+|                                                | 3d. API                   | `superpowers:brainstorming`                    | spec                                         | `docs/api/api.md`, `docs/api/endpoints/*.md`                                                        |
+|                                                | 3e. Database              | `superpowers:brainstorming`                    | spec                                         | `docs/database/db.md`                                                                               |
+| **4. Build**                                   | 4a. Define Plan           | `superpowers:writing-plans`                    | intent, design docs                          | `docs/superpowers/plans/YYYY-MM-DD-task-name.md`                                                    |
+|                                                | 4b. Implement             | `superpowers:executing-plans`                  | plan, architecture, prototype, design system | working code                                                                                        |
+|                                                | 4c. Verify                | `superpowers:verification-before-completion`   | code                                         | build/lint/typecheck pass                                                                           |
+|                                                | 4d. Code Review (require) | `superpowers:requesting-code-review`           | diff, plan, docs                             | CRITICAL/HIGH findings fixed                                                                        |
+| **5. Test** (require)                          | 5a. Generate cases        | AI (no dedicated skill)                        | specs, screens                               | `docs/test/CODE-feature-name.testcase.md`                                                           |
+|                                                | 5b. Run cases             | developer or AI                                | code, test cases                             | results; user confirms the feature works                                                            |
+|                                                | 5c. Fix bugs              | `superpowers:systematic-debugging`             | failing cases                                | root cause fixed; if docs must change, restart from stage 2                                         |
+| **6. Deploy** (require)                        | Deploy                    | the project's own deploy skill                 | code the user confirmed                      | release                                                                                             |
+| **7. Maintain**                                | Intake                    | —                                              | bug report, new idea or feature              | bug → save in `docs/requirement/`, then 5c; idea or feature → stage 1                               |
 
-## Vibe Coding Development Lifecycle
+Notes:
 
-Per feature/task, in order:
+- In stages 2 and 3, brainstorming must not hand off to `writing-plans`: stop after writing the files above; the plan is written in 4a.
+- Stage 3: a task only does the sub-steps it needs, not all of 3a–3e.
+- Specs and screens stay `Draft` in `01_spec.md` / `01_screen.md` until the user approves them (`Approved`); Build starts after that.
+- Architecture is written in a project's first loop, from the closest generic reference, and confirmed by the user.
+- Merge / PR is outside the flow; the deploy skill decides how code reaches the main branch.
 
-1. **Brainstorm** — `superpowers:brainstorming`; output is the task spec draft `docs/superpowers/specs/YYYY-MM-DD-task-name.spec.md`
-2. **Sync Core Docs** (require) — reconcile the task spec draft into `docs/specs/`, `docs/database/`, `docs/api/`, `docs/screens/` right away, before planning starts
-3. **Design UI** (optional — only if the task has UI) — `frontend-design` skill; create/update `docs/screens/FEATURE-CODE-screen-name-00.screen.md` + paired `.html` prototype, following `docs/design/DESIGN.md` and `design-system.html`
-4. **Define Plan** — `superpowers:writing-plans` (or `planner` agent), based on the core docs already synced in step 2
-5. **Implement** — `superpowers:executing-plans` (or `superpowers:subagent-driven-development`)
-6. **Code Review** (require) — `superpowers:requesting-code-review`; address feedback before moving on
-7. **Self-test** (require) — run build/lint/typecheck via `superpowers:verification-before-completion`, then the user manually tests the feature and confirms before moving on. No unit or e2e tests are written for this project.
-8. **Finish Development** (require) — `superpowers:finishing-a-development-branch`; wrap up the git branch
+## 4. Rules
 
-## Claude Settings (`.claude/settings.local.json`)
-
-Local permission overrides for this project — grants the assistant unattended access to the core tools it needs for the lifecycle above.
-
-```jsonc
-{
-  "permissions": {
-    "allow": [
-      "Bash(*)", // run shell commands (tests, build, lint, git) without per-call prompts
-      "Read(*)", // read any file in the repo
-      "Write(*)", // create new files (specs, plans, screens, etc.)
-      "Edit(*)", // modify existing files
-      "Glob(*)", // pattern-match files by path
-      "Grep(*)", // search file contents
-    ],
-    "deny": [], // no explicit denials — tighten this list if the project needs stricter guardrails
-  },
-}
-```
+- `docs/` is the **single source of truth**: consult it before any change, update it the moment something changes. Stale docs are bugs.
+- Follow `CLAUDE.md`, the stack's architecture file, and the screen prototype + design system. Don't deviate or add directories outside `docs/` without confirming.
+- Tests are docs in `docs/test/`: no coverage requirement, no committed unit/e2e suite.
+- Never read or print production secrets (`.env`, credentials, API keys). Ask the user instead.
