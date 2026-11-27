@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: new-brand-teal-clinic
+expected_outcome: |
+  designs/acme-clinic/DESIGN.md exists, lints with 0 errors, uses #0F766E as primary with a full consistent primary family. designs/acme-clinic/design.html exists with no template placeholders, and the SYSTEMS array in index.html lists the new system.

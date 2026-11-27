@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: refresh-html-after-rebrand
+expected_outcome: |
+  DESIGN.md primary family is rederived from #7C3AED (all five tokens, not only primary), surface-enter duration is 350ms, design.html :root and prose match DESIGN.md, and lint stays at 0 errors.
+context:
+  scaffold_script: place-files.sh

@@ -17,6 +17,7 @@ Tokens are the normative source of truth. The prose only explains context for ap
 version: alpha              # optional, currently always "alpha"
 name: <string>               # required
 description: <string>        # optional
+omitted: <string[]|{section, reason?}[]>  # optional, suppresses missing-section infos
 colors:
   <token-name>: <Color>
 typography:
@@ -69,6 +70,8 @@ Sections use `##` headings. Sections can be skipped, but if present they MUST ap
 
 Two sections must never share the same heading — this is a hard error and the file will be rejected.
 
+**Project extension:** this repo's template also uses `## Motion & Micro-interaction` (after Shapes) and `## Voice & Content Strategy` (after Motion). They are not in Google's spec; unknown headings are accepted and the linter raises no `section-order` warning for them. Keep the order Overview, Colors, Typography, Layout, Elevation & Depth, Shapes, Motion & Micro-interaction, Voice & Content Strategy, Components, Do's and Don'ts.
+
 ## 5. Component tokens
 
 Components map a name to a group of sub-tokens:
@@ -118,7 +121,7 @@ npx -p @google/design.md designmd lint DESIGN.md
 ### `lint`
 Returns JSON with `findings[]` (each finding has `severity`: error/warning/info, `path`, `message`) and `summary: {errors, warnings, info}`. Exit code `1` if there are errors, `0` otherwise.
 
-### Linter rules (9 rules)
+### Linter rules (10 rules)
 
 | Rule                 | Severity | What it checks                                                                                |
 | -------------------- | -------- | ----------------------------------------------------------------------------------------------- |
@@ -130,6 +133,7 @@ Returns JSON with `findings[]` (each finding has `severity`: error/warning/info,
 | `missing-sections`   | info     | An optional section (spacing, rounded) is absent even though other tokens are present           |
 | `missing-typography` | warning  | `colors` is present but `typography` tokens are missing                                         |
 | `section-order`      | warning  | Sections appear out of the standard order                                                       |
+| `token-like-ignored` | warning  | A top-level key looks like a token map but is not a schema key (colors, typography, spacing, rounded, components); exports ignore it. The template's `motion` block triggers this one warning; it is kept on purpose (motion tokens are read by `design.html`) and reported to the user |
 | `unknown-key`        | warning  | A top-level YAML key looks like a typo of a standard key (e.g. `colours:` → `colors:`)          |
 
 ### `export`

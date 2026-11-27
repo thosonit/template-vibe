@@ -1,4 +1,4 @@
-# Vibe Template
+	# Vibe Template
 
 ## 1. Overview
 
@@ -27,7 +27,7 @@ docs/                # Single source of truth
 ### One-time setup
 
 1. **CLAUDE.md** — project overview, structure, conventions.
-2. **Git convention** — GitFlow + Conventional Commits (`git-conventions`).
+2. **Git workflow** — interview, pick a flow, generate `.claude/rules/git-workflow.md` (`git-conventions`).
 3. **Design system** — `docs/design/DESIGN.md`, `docs/design/design-system.html`.
 
 ### Per feature / task
@@ -36,11 +36,11 @@ Each stage ends by committing the artifact the next stage reads.
 
 | Stage                                          | Step                      | Skill                                          | Input                                        | Output                                                                                              |
 | ---------------------------------------------- | ------------------------- | ---------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| **1. Requirement**                             | Collect                   | — (manual)                                     | customer info, ideas, tickets, bug reports   | `docs/requirement/YYYY-MM-DD-task-name.md`                                                          |
+| **1. Requirement**                             | Collect                   | `capture-requirement`                          | customer info, ideas, tickets, bug reports   | `docs/requirement/YYYY-MM-DD-task-name.md`                                                          |
 | **2. Plan**                                    | Brainstorm intent         | `superpowers:brainstorming`                    | requirement files                            | `docs/plan/YYYY-MM-DD-task-name.intent.md` + `01_plan.md` entry (`Draft` → `Accepted` / `Rejected`) |
 | **3. Design** (require, `Accepted` plans only) | 3a. Architecture          | `superpowers:brainstorming`                    | `Accepted` intent, core docs                 | `docs/architecture/<STACK>_ARCHITECTURE.md`                                                         |
 |                                                | 3b. Spec                  | `superpowers:brainstorming`                    | `Accepted` intent, core docs                 | `docs/specs/CODE-feature-name.spec.md` + `01_spec.md` entry                                         |
-|                                                | 3c. Screens               | `superpowers:brainstorming`, `frontend-design` | spec, `docs/design/`                         | `docs/screens/FEATURE-CODE-screen-name-00.screen.md` + `.screen.html`                               |
+|                                                | 3c. Screens               | `superpowers:brainstorming`, `write-screen-spec`| spec, `docs/design/`                         | `docs/screens/FEATURE-CODE-screen-name-00.screen.md` + `.screen.html`                               |
 |                                                | 3d. API                   | `superpowers:brainstorming`                    | spec                                         | `docs/api/api.md`, `docs/api/endpoints/*.md`                                                        |
 |                                                | 3e. Database              | `superpowers:brainstorming`                    | spec                                         | `docs/database/db.md`                                                                               |
 | **4. Build**                                   | 4a. Define Plan           | `superpowers:writing-plans`                    | intent, design docs                          | `docs/superpowers/plans/YYYY-MM-DD-task-name.md`                                                    |
@@ -66,29 +66,29 @@ Status: ✅ available · 🚧 not yet created.
 
 ### Repo skills (`.claude/skills/`)
 
-| Skill                        | Stage    | Purpose                                                                 | Status |
-| ---------------------------- | -------- | ----------------------------------------------------------------------- | ------ |
-| `init-project`               | Setup    | Confirm the system and stacks, record them in CLAUDE.md                 | ✅     |
-| `git-conventions`            | Setup, 6 | GitFlow branches + Conventional Commits                                 | ✅     |
-| `design-md-builder`          | Setup, 3c | Build / lint `docs/design/DESIGN.md`                                   | ✅     |
-| `design-system-html-builder` | Setup, 3c | Build `design-system.html` from DESIGN.md                              | ✅     |
-| `scaffold-nextjs-app`        | 3a, 4    | Next.js architecture doc + project skeleton                             | ✅     |
-| `scaffold-flutter-app`       | 3a, 4    | Flutter architecture doc + project skeleton                             | ✅     |
-| `flutter-dart-code-review`   | 4d       | Flutter/Dart review checklist                                           | ✅     |
-| `capture-requirement`        | 1, 7     | Save raw info or bug reports to `docs/requirement/YYYY-MM-DD-task-name.md` | 🚧  |
-| `write-spec`                 | 3b       | `CODE-feature-name.spec.md` from template + `01_spec.md` entry          | 🚧     |
-| `write-screen-spec`          | 3c       | `.screen.md` + `.screen.html` prototype with state-switch panel         | 🚧     |
-| `write-api-db-docs`          | 3d, 3e   | Update `docs/api/` and `docs/database/db.md` from the spec              | 🚧     |
-| `generate-testcases`         | 5a       | `CODE-feature-name.testcase.md` from specs and screens                  | ✅     |
-| `nextjs-code-review`         | 4d       | Next.js review checklist (counterpart of the Flutter one)               | 🚧     |
-| `deploy`                     | 6        | Written per project; the template does not ship one                     | 🚧     |
+| Skill                        | Stage     | Purpose                                                                    | Status |
+| ---------------------------- | --------- | -------------------------------------------------------------------------- | ------ |
+| `init-project`               | Setup     | Confirm the system and stacks, record them in CLAUDE.md                    | ✅      |
+| `git-conventions`            | Setup, 6  | Interview, pick a git flow, write `.claude/rules/git-workflow.md`          | ✅      |
+| `design-md-builder`          | Setup, 3c | Build / lint `docs/design/DESIGN.md`                                       | ✅      |
+| `design-system-html-builder` | Setup, 3c | Build `design-system.html` from DESIGN.md                                  | ✅      |
+| `scaffold-nextjs-app`        | 3a, 4     | Next.js architecture doc + project skeleton                                | ✅      |
+| `scaffold-flutter-app`       | 3a, 4     | Flutter architecture doc + project skeleton                                | ✅      |
+| `flutter-dart-code-review`   | 4d        | Flutter/Dart review checklist                                              | ✅      |
+| `capture-requirement`        | 1, 7      | Save raw info or bug reports to `docs/requirement/YYYY-MM-DD-task-name.md` | ✅      |
+| `write-spec`                 | 3b        | `CODE-feature-name.spec.md` from template + `01_spec.md` entry             | 🚧     |
+| `write-screen-spec`          | 3c        | `.screen.md` + `.screen.html` prototype with state-switch panel            | ✅      |
+| `write-api-db-docs`          | 3d, 3e    | Update `docs/api/` and `docs/database/db.md` from the spec                 | 🚧     |
+| `generate-testcases`         | 5a        | `CODE-feature-name.testcase.md` from specs and screens                     | ✅      |
+| `nextjs-code-review`         | 4d        | Next.js review checklist (counterpart of the Flutter one)                  | 🚧     |
+| `deploy`                     | 6         | Written per project; the template does not ship one                        | 🚧     |
 
 ### External skills (plugin / global)
 
 | Skill                                                                                                                                                          | Stage            | Purpose                                         | Status |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ----------------------------------------------- | ------ |
 | `superpowers:*` (`brainstorming`, `writing-plans`, `executing-plans`, `verification-before-completion`, `requesting-code-review`, `systematic-debugging`) | 2, 3, 4, 5       | Core workflow skills; Superpowers plugin required | ✅   |
-| `frontend-design`                                                                                                                                              | 3c               | Distinctive UI for screen prototypes            | ✅     |
+| `frontend-design`                                                                                                                                              | 3c               | Used by write-screen-spec for prototypes            | ✅     |
 | `review-spec-docs`                                                                                                                                             | 3 (before approval) | Review the spec set for gaps and consistency | ✅     |
 
 ## 5. Rules

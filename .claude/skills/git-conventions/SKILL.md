@@ -1,63 +1,71 @@
 ---
 name: git-conventions
-description: Commit message and branch naming conventions for this project (Gitflow + Conventional Commits). Use before creating a branch or writing a commit message in this repo.
+description: Use when setting up or changing how a project uses git - choosing a branching strategy, branch naming, PR/merge rules or release flow - or before the first branch in a repo that has no .claude/rules/git-workflow.md yet.
 ---
 
 # git-conventions
 
-Commit message and branch naming conventions for this project.
+Interview the user about the project, propose candidate git workflows, let the user pick the one that fits, and write it to `.claude/rules/git-workflow.md`. Claude Code loads every file in `.claude/rules/` automatically, so the rule file is the single source of truth for git behaviour.
 
-## When to use
+Commit message format is out of scope: it follows the common commit rule (`~/.claude/rules/common/git-workflow.md`), so this skill never defines it.
 
-Before creating a branch or writing a commit message in this repo.
+## Step 0: Check what exists
 
-## Branching model: Gitflow
+- `.claude/rules/git-workflow.md` exists: read it, tell the user, and ask whether to keep it, amend it, or re-interview. Never overwrite silently.
+- Missing: run the interview.
+- Also read `git branch -a`, `git log --oneline -20` and CLAUDE.md for facts you can infer, so you don't ask what the repo already answers.
 
-Two permanent branches:
+## Step 1: Interview
 
-- `main` — production-ready, always releasable. Only updated via `release/*` or `hotfix/*` merges.
-- `develop` — integration branch for ongoing work. Default base for new branches.
+Ask with AskUserQuestion, at most 4 questions per call, 2 rounds max. Skip any question the repo already answers. Put your recommended option first.
 
-Supporting branches:
+| Topic | Ask | Drives |
+|---|---|---|
+| People | Solo, small team (2-5), or larger? Is AI committing on its own or only on request? | review rules, protected branches |
+| Release | Deploy continuously, ship versioned releases, or maintain several versions at once? | trunk vs release branches |
+| Environments | Single prod, or staging + prod? CI/CD and hosting? If no CI/CD, how does a merge to `main` reach prod? | merge targets, tags, deploy note |
+| Quality gates | PR required? Reviewer count? CI must pass? Merge method (squash default)? Is direct push to `main` allowed? | PR rules, protected branches |
+| Tracking | Ticket system (Jira, Redmine, GitHub Issues, none)? Ticket id in branch names? | branch naming |
 
-| Branch | Branches off | Merges into | Naming |
-|---|---|---|---|
-| Feature | `develop` | `develop` | `feature/<short-description>` |
-| Release | `develop` | `main` + `develop` | `release/<version>` |
-| Hotfix | `main` | `main` + `develop` | `hotfix/<short-description>` |
-| Chore/docs/refactor | `develop` | `develop` | `chore/`, `docs/`, `refactor/<short-description>` |
+## Step 2: Propose and let the user choose
 
-`<short-description>` is kebab-case, no ticket numbers unless one exists. `<version>` follows semver, e.g. `release/1.2.0`.
+Many git flows exist and no single one is right. Do not decide for the user.
 
-After merging a `release/*` or `hotfix/*` into `main`, tag it (`vX.Y.Z`) and merge back into `develop` so fixes aren't lost.
+1. From the answers, pick the 2-3 candidates that fit from [references/workflows.md](references/workflows.md) (GitHub Flow, Trunk-based, GitLab Flow, Gitflow, release-branch, forking; add another if the answers point to it).
+2. Mark the best fit **(Recommended)** and put it first.
+3. Ask with AskUserQuestion, one option per candidate. Each option's description gives: how it works in one line, why it fits (or not) given their answers, and its main cost.
+4. The user's pick is final, even if it is not your recommendation; "Other" lets them name a flow or tweak one. Write nothing until they choose.
 
-## Commit messages (Conventional Commits)
+## Step 3: Write the rule
 
-```
-<type>(<scope>): <description>
+Create `.claude/rules/git-workflow.md` with exactly these sections, filled from the confirmed answers (no placeholders left behind):
 
-<optional body>
-```
+1. **Branching model** - permanent branches, supporting-branch table (branches off / merges into / naming)
+2. **Commit messages** - one line pointing to the common commit rule; define nothing here
+3. **Pull requests and merging** - who reviews, required checks, merge method (squash/merge/rebase), branch deletion, and a line stating whether direct push to `main` is allowed (yes/no, never implied)
+4. **Release and hotfix** - tagging, back-merge, how code reaches `main`
+5. **AI assistant rules** - commit only when asked; never push to a branch section 3 marks protected, and never force-push `main`; follow the model above without re-deriving it. Do not state attribution lines: those come from the user's settings.
 
-Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, `ci`
+Start with a one-line intro naming this file the source of truth. Keep it under ~60 lines. Rules state what to do; do not explain git.
 
-`<scope>` is the affected feature/module, lowercase kebab-case — name it after whatever was actually changed: a `lib/` feature folder (`auth`, `spec`, `player`), or a tooling directory (`skill`, `agent`, `build`, `deps`). Don't force a fixed list; pick the scope that most precisely identifies the change. Omit the scope only when a change truly spans the whole repo and no single scope fits.
+## Step 4: Reconcile CLAUDE.md
 
-- Subject line: imperative mood, lowercase after `type(scope):`, no trailing period.
-- Keep the subject under ~72 chars; use the body for the "why" when it's not obvious from the diff.
-- One logical change per commit — don't bundle unrelated work.
+The rule file is auto-loaded, so CLAUDE.md must not repeat its content (two copies drift).
 
-Examples:
-```
-feat(spec): add spec templates and generate-specs skill
-feat(project): move flutter source to src/mimi_app
-docs: add CLAUDE.md and update README with project structure
-```
+- Remove any branch/merge text from CLAUDE.md that the rule now covers.
+- Keep at most one pointer line, e.g. `Git: follow .claude/rules/git-workflow.md (generated by the git-conventions skill).`
+- Also grep README.md and `.claude/skills/init-project/templates/` for stale branch text and list hits for the user; do not edit them unasked.
+- If CLAUDE.md gates a stage on git behaviour (e.g. "how code reaches main"), point to the rule section instead of describing it.
 
-## Workflow
+## Step 5: Verify
 
-1. Branch off `develop` (or `main` for hotfixes) using the naming pattern above.
-2. Make commits following the Conventional Commits format.
-3. Only commit when explicitly asked — never commit automatically.
-4. Open PRs into `develop` (features/chores) or `main` + `develop` (releases/hotfixes), per the table above.
-5. Never push directly to `main` or `develop`; always go through a PR.
+Re-read the written rule against the interview answers; confirm no `<placeholder>` text remains, then show the user the final file and the proposed CLAUDE.md diff, and apply the CLAUDE.md edit only after they approve. Commit only when asked.
+
+## Common mistakes
+
+- Choosing the flow for the user instead of presenting candidates.
+- Recommending Gitflow by default: it is heavy for solo/continuous-deploy projects.
+- Defining commit format or scopes: the common rule owns that.
+- Asking every question when the repo already shows the answer (existing branches, CI config).
+- Restating the rule in CLAUDE.md "for emphasis".
+- Writing the rule before the user confirms the workflow.
