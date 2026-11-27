@@ -63,7 +63,4 @@ Notes:
 
 ## 4. Rules
 
-- `docs/` is the **single source of truth**: consult it before any change, update it the moment something changes. Stale docs are bugs.
-- Follow `CLAUDE.md`, the stack's architecture file, and the screen prototype + design system. Don't deviate or add directories outside `docs/` without confirming.
-- Tests are docs in `docs/test/`: no coverage requirement, no committed unit/e2e suite.
-- Never read or print production secrets (`.env`, credentials, API keys). Ask the user instead.
+- `docs/` is the **single source of truth**: read it before any change and update it the moment something changes.
